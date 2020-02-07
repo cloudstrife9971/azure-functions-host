@@ -19,7 +19,7 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Middleware
             _hostOptions = hostOptions.Value;
         }
 
-        public async Task Invoke(HttpContext context, RequestDelegate next)
+        public Task Invoke(HttpContext context, RequestDelegate next)
         {
             context.Response.OnStarting(() =>
             {
@@ -31,7 +31,7 @@ namespace Microsoft.Azure.WebJobs.Script.WebHost.Middleware
                 return Task.CompletedTask;
             });
 
-            await next(context);
+            return next(context);
         }
     }
 }

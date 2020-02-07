@@ -447,16 +447,15 @@ namespace Microsoft.Azure.WebJobs.Script
                 return false;
             }
 
-            var kvps = state.Where(k => string.Equals(k.Key, key, StringComparison.OrdinalIgnoreCase));
-
-            if (!kvps.Any())
+            var values = state.Where(k => string.Equals(k.Key, key, StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).ToArray();
+            if (values.Length == 0)
             {
                 return false;
             }
 
             // Choose the last one rather than throwing for multiple hits. Since we use our own keys to track
             // this, we shouldn't have conflicts.
-            return Convert.ToBoolean(kvps.Last().Value);
+            return Convert.ToBoolean(values.Last());
         }
 
         public static TValue GetStateValueOrDefault<TValue>(IEnumerable<KeyValuePair<string, object>> state, string key)
@@ -466,16 +465,15 @@ namespace Microsoft.Azure.WebJobs.Script
                 return default(TValue);
             }
 
-            var kvps = state.Where(k => string.Equals(k.Key, key, StringComparison.OrdinalIgnoreCase));
-
-            if (!kvps.Any())
+            var values = state.Where(k => string.Equals(k.Key, key, StringComparison.OrdinalIgnoreCase)).Select(p => p.Value).ToArray();
+            if (values.Length == 0)
             {
                 return default(TValue);
             }
 
             // Choose the last one rather than throwing for multiple hits. Since we use our own keys to track
             // this, we shouldn't have conflicts.
-            return (TValue)kvps.Last().Value;
+            return (TValue)values.Last();
         }
 
         public static string ResolveFunctionName(IEnumerable<KeyValuePair<string, object>> stateProps, IDictionary<string, object> scopeProps)
