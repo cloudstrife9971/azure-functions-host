@@ -46,7 +46,7 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Middleware
                 return Task.CompletedTask;
             };
 
-            var middleware = new JobHostEasyAuthMiddleware(easyAuthOptions);
+            var middleware = new JobHostEasyAuthMiddleware(easyAuthOptions, null);
             var httpContext = new DefaultHttpContext();
             await middleware.Invoke(httpContext, next);
 
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.WebJobs.Script.Tests.Middleware
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IJobHostHttpMiddleware, JobHostEasyAuthMiddleware>());
                 });
 
-            var middleware = new JobHostEasyAuthMiddleware(easyAuthOptions);
+            var middleware = new JobHostEasyAuthMiddleware(easyAuthOptions, null);
             var server = new TestServer(builder); // TODO - for now need custom server bc they're only getting env vars & not config?
 
           //  var client = server.CreateClient();
